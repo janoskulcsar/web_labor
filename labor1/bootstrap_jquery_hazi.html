@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap és jQuery Házi Feladat</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .highlight { background: yellow; }
+  </style>
+</head>
+<body class="bg-light">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Házi</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="#">Főoldal</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contactForm">Kapcsolat</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container my-5">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="card">
+          <img src="https://picsum.photos/300/200" class="card-img-top" alt="Kép 1">
+          <div class="card-body">
+            <h5 class="card-title">Első kártya</h5>
+            <p class="card-text">Ez az első kártya. Módosítsd a gombbal a szöveget alább!</p>
+            <button id="btnText" class="btn btn-primary">Szövegváltoztatás</button>
+            <p id="para" class="mt-3">Ez egy módosítható bekezdés.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <img src="https://picsum.photos/300/200?2" class="card-img-top" alt="Kép 2">
+          <div class="card-body">
+            <h5 class="card-title">Második kártya</h5>
+            <p class="card-text">Ez a második kártya. Jquery highlight.</p>
+            <button id="btnToggle" class="btn btn-warning">Highlight váltás</button>
+            <div id="box" class="mt-3 p-2 border">Klikk a sárga háttérhez!</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <img src="https://picsum.photos/300/200?3" class="card-img-top" alt="Kép 3">
+          <div class="card-body">
+            <h5 class="card-title">Harmadik kártya</h5>
+            <p class="card-text">Ez a harmadik kártya AJAX példa. Lásd eredmény lejjebb!</p>
+            <button id="ajaxBtn" class="btn btn-success">AJAX lekérdezés</button>
+            <pre id="result" class="mt-3"></pre>
+            <button data-bs-toggle="modal" data-bs-target="#infoModal" class="btn btn-secondary mt-2">Részletek</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="alertBox" class="mt-4"></div>
+    <button id="showAlert" class="btn btn-outline-danger mt-1">Alert mutatása</button>
+
+    <div class="modal fade" id="infoModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal cím</h5>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p>Modal tartalom</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-5 col-md-6 mx-auto">
+      <form id="contactForm" class="p-3 border bg-white rounded">
+        <input id="name" class="form-control mb-2" placeholder="Név" required>
+        <input id="email" type="email" class="form-control mb-2" placeholder="Email" required>
+        <textarea id="msg" class="form-control mb-2" placeholder="Üzenet"></textarea>
+        <button class="btn btn-success">Küldés</button>
+      </form>
+      <div id="thanks" class="mt-2 text-success"></div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    $('#btnText').on('click', function() {
+      $('#para').text('Új szöveg jQuery-vel!');
+    });
+
+    $('#btnToggle').on('click', function() {
+      $('#box').toggleClass('highlight');
+    });
+
+    $('#ajaxBtn').on('click', function() {
+      $.get('https://httpbin.org/get', function(data) {
+        $('#result').text(JSON.stringify(data, null, 2));
+      });
+    });
+
+    $('#showAlert').on('click', function() {
+      $('#alertBox').html(
+        `<div class="alert alert-success alert-dismissible fade show" role="alert">
+          Sikeres művelet!
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>`
+      );
+    });
+
+    $('#infoModal').on('show.bs.modal', function() {
+      $('.modal-body p').text('Tartalom betöltve jQuery-ből.');
+    });
+
+    $('#contactForm').on('submit', function(e) {
+      e.preventDefault();
+      const nev = $('#name').val();
+      if (nev.trim()) {
+        $('#thanks').text('Köszönjük, ' + nev + '!');
+      }
+    });
+  </script>
+</body>
+</html>
